@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>router</title>
+</head>
+<body>
+		<!-- <a href="#!/index">index</a>
+		<a href="#!/home">home</a> -->
+	<div id="demo">
+		<!-- {{name}} -->
+		<!-- <index></index> -->
+		<!-- <router-view></router-view> -->
+	</div>
+</body>
+<style>
+	.v-link-active{
+		color: red;
+	}
+</style>
+<script src="vue.js"></script>
+<script src="vue-router.js"></script>
+<script>
+	var index = Vue.extend({
+		template:'<div>第一个路由</div>'
+	})
+	//Vue.component('index',index);
+	var home = Vue.extend({
+		template:'<div>第二个路由</div>'
+	})
+	var App = Vue.extend({
+		template:'{{name}}<router-view></router-view>',
+		replace:false,
+		data:function(){
+			return {
+				name:'ggithub'
+			}
+		}
+	})
+	//Vue.component('home',home);
+	// var App = new Vue({
+	// 	el:'#demo',
+	// 	data:{
+	// 		name:'wsscat'
+	// 	},
+	// 	methods:{
+
+	// 	}
+	// })
+	// 定义路由
+	router = new VueRouter();
+	router.map({
+		'/index':{//注册组件index
+			component:index
+		},
+		'/home':{
+			component:home
+		}
+	})
+	// 默认路由
+	router.redirect({
+		'*':'/index'
+	})
+	// 激活路由
+	router.start(App,'#demo');
+</script>
+</html>

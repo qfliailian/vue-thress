@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>router</title>
+	<style>
+		.v-link-active{
+			color: red;
+		}
+		a{ font-size: 20px; }
+	</style>
+</head>
+<body>
+	<div id="demo"></div>
+</body>
+	<template id="app">
+		<a v-link="{path:'/index'}">index</a>
+		<a v-link="{name:'home',params:{id:1,name:'abc'}}">home</a>
+		<a v-link="{path:'/index/a'}">a</a>
+		<a v-link="{path:'/index/b'}">b</a>
+		<router-view></router-view>
+	</template>
+
+<script src="vue.js"></script>
+<script src="vue-resource.min.js"></script>
+<script src="vue-router.js"></script>
+<script>
+	var index = Vue.extend({
+		template:'<div>第一个路由</div><router-view></router-view>'
+	})
+	var home = Vue.extend({
+		template:'<div>第二个路由</div>',
+		//获取路由参数
+		route:{
+			data:function(transition){
+				console.log(transition);
+				this.$http.get('test.php',{
+					params:{
+						name:transition.to.params.name,
+						id:transition.to.params.id
+					}
+				}).then(function(data){
+					console.log(data)
+				})
+			}
+		}
+	})
+	var a = Vue.extend({
+		template:'<p>子路由A</p>'
+	})
+	var b = Vue.extend({
+		template:'<p>ggithub子路由B</p>'
+	})
+	var App = Vue.extend({
+		template:'#app',
+		replace:false,
+		data:function(){
+			return {
+				name:'ggithub'
+			}
+		}
+	})
+
+	// 定义路由
+	router = new VueRouter();
+	router.map({
+		'/index':{//注册组件index
+			component:index,
+			//子路由
+			subRoutes:{
+				'/a':{
+					component:a
+				},
+				'/b':{
+					component:b
+				}
+			}
+		},
+		'/home/:id/:name':{
+			name:'home',
+			component:home,
+			//home的子路由
+			
+		},
+	})
+	// 默认路由
+	router.redirect({
+		'*':'/index'
+	})
+	// 激活路由
+	router.start(App,'#demo');
+</script>
+</html>

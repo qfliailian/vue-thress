@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+
+		/*进场过渡进程：expend-enter -> expend-transition */
+		/*离场过渡进程：expend-transition -> expend-leave*/
+		.expend-enter{ opacity: 0 }
+		.expend-transition{ transition: all .3s ease; opacity: 1 }
+		.expend-leave{ opacity: 0 }
+
+		.rotate-transition{transition: all .3s ease;background: #eee;height: 20px;}
+		.rotate-enter,.rotate-leave{ height: 0;opacity: 0; transform: rotate(360deg); }
+
+		.staggered-transition{}
+		.staggered-enter,.staggered-leave{}
+
+	</style>
+</head>
+<body>
+	<!-- v-if ng-if v-show ng-show v-for ng-reapeat-->
+	<div id="demo">
+		<p>{{name}}</p>
+		<p style="color: red">v-if</p>
+		<button @click="fi=!fi">ok</button>
+		<div v-if='fi' transition="expend">hello wsscat</div>
+		<p style="color: red">v-show</p>
+		<button @click="show=!show">ok</button>
+		<div v-show='show' transition="rotate">hello wsscat</div>
+		<p style="color: red">v-for</p>
+		<ul>
+			<li></li>
+		</ul>
+	</div>
+</body>
+<script src="vue.js"></script>
+<script>
+	var demo = new Vue({
+		el:'#demo',
+		data:{
+			name:'wsscat',
+			fi:true,
+			show:true
+		},
+		methods:{}
+	})
+</script>
+</html>

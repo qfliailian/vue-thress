@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>路由</title>
+</head>
+<body>
+	<div id="demo">
+		<p>{{name}}</p>
+		<qwe :a='name'></qwe>
+	</div>
+</body>
+<script src="vue.js"></script>
+<script src="vue-resource.min.js"></script>
+<script>
+	//先定义再注册
+	var wsscatchild = Vue.extend({
+		template:'<div>子组件</div>',
+		props:['a'],
+		ready:function(){
+			console.log(this.a)
+		}
+	})
+	var wsscat = Vue.extend({
+		template:'<div>{{name}}</div><asd :a="name"></asd>',
+		props:['a'],
+		components:{
+			asd:wsscatchild
+		},
+		data:function(){
+			return {
+				name:'我的第一个组件'
+			}
+		},
+		methods:{
+
+		},
+		ready:function(){
+			console.log(this.a)
+		}
+	})
+	// 全局注册
+	// Vue.component('qwe',wsscat)
+	var demo = new Vue({
+		el:'#demo',
+		data:{
+			name:'wsscat'
+		},
+		// 局部注册
+		components:{
+			qwe:wsscat
+		},
+		ready:function(){
+			this.$http.get('test.php',{
+				params:{}
+			}).then(function(data){
+
+			},function(error){
+				
+			})
+		}
+	})
+</script>
+</html>

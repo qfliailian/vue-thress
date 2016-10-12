@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vue</title>
+</head>
+<body>
+	<div id="demo">
+		<h1>{{name}}</h1>
+		<qwe :a='name'></qwe>
+	</div>
+</body>
+<script src="vue.js"></script>
+<script src="vue-resource.min.js"></script>
+<script>
+ 	var wsscatchild = Vue.extend({
+ 		template:'<div>子组件</div>',
+ 		props:['a'],
+ 		ready:function (){
+ 			console.log(this.a);
+ 		}
+ 	})
+	var wsscat = Vue.extend({
+		template:'<div>{{name}}<asd></asd></div>',
+		props:['a'],//取构造器的数据
+		components:{
+			asd:wsscatchild
+		},
+		data:function(){
+			return {
+				name:'我的第一个组件'
+			}
+		},
+		el:function(){
+			return '#wsscat'
+		},
+		methods:{
+
+		},
+		ready:function(){
+			console.log(this.a);
+		}
+	})
+	//构造器
+	var demo = new Vue({
+		el:'#demo',
+		data:{name:'ggithub'},
+		components:{
+			qwe:wsscat
+		},
+		ready:function(){
+			this.$http.get('test.php',{
+				params:{
+
+				}
+			}).then(function(data){
+				//成功回调函数
+				//拿回来的data已经自动转化为json对象了，可以直接用了
+				console.log(data);
+			},function(error){
+				//回调不成功，错误
+			})
+		}
+	})
+	console.log(demo);
+</script>
+</html>
